@@ -1,3 +1,5 @@
+// https://adventofcode.com/2021/day/1
+
 package day1
 
 func Puzzle2(input []int) int {
