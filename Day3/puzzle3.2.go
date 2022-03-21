@@ -1,7 +1,6 @@
 package day3
 
 import (
-	"fmt"
 	"reflect"
 	"runtime"
 	"strconv"
@@ -36,7 +35,6 @@ func lessCommonVal(input []string, index int) int {
 }
 
 func findBinaryString(input []string, commonVal func([]string, int) int) int {
-	fmt.Println(runtime.FuncForPC(reflect.ValueOf(commonVal).Pointer()).Name())
 	tempInputStr := input
 	for i := 0; i < len(input[0]); i++ {
 		if len(tempInputStr) == 1 {
@@ -44,13 +42,12 @@ func findBinaryString(input []string, commonVal func([]string, int) int) int {
 		}
 		tempInputStr2 := make([]string, 0)
 		common := commonVal(tempInputStr, i)
-		fmt.Printf("Bin n. %d. Common %d\n", i+1, common)
 		for _, binStr := range tempInputStr {
 			if int(binStr[i]-'0') == common {
 				tempInputStr2 = append(tempInputStr2, binStr)
 			} else if common == 2 {
-				if (runtime.FuncForPC(reflect.ValueOf(commonVal).Pointer()).Name() == "AoC-2021/Day3.mostCommonVal" && int(binStr[i]-'0') == 1) || 
-				(runtime.FuncForPC(reflect.ValueOf(commonVal).Pointer()).Name() == "AoC-2021/Day3.lessCommonVal" && int(binStr[i]-'0') == 0) {
+				if (runtime.FuncForPC(reflect.ValueOf(commonVal).Pointer()).Name() == "AoC-2021/Day3.mostCommonVal" && int(binStr[i]-'0') == 1) ||
+					(runtime.FuncForPC(reflect.ValueOf(commonVal).Pointer()).Name() == "AoC-2021/Day3.lessCommonVal" && int(binStr[i]-'0') == 0) {
 					tempInputStr2 = append(tempInputStr2, binStr)
 				}
 			}

@@ -4,19 +4,7 @@ import (
 	utility "AoC-2021/Utility"
 )
 
-func countOverlaps(bitmap [][]int) int {
-	count := 0
-	for i := 0; i < len(bitmap); i++ {
-		for j := 0; j < len(bitmap[0]); j++ {
-			if bitmap[i][j] >= 2 {
-				count += 1
-			}
-		}
-	}
-	return count
-}
-
-func checkBitmap(bitmap [][]int, x1 int, y1 int, x2 int, y2 int) {
+func checkBitmapDiag(bitmap [][]int, x1 int, y1 int, x2 int, y2 int) {
 	if x1 >= x2 {
 		tmp := x1
 		x1 = x2
@@ -31,14 +19,14 @@ func checkBitmap(bitmap [][]int, x1 int, y1 int, x2 int, y2 int) {
 
 	for j := x1; j <= x2; j++ {
 		for i := y1; i <= y2; i++ {
-			bitmap[i][j] += 1
+			if i == j {
+				bitmap[i][j] += 1
+			}
 		}
 	}
 }
 
-
-
-func Puzzle5_1(input []utility.Struct5_1) int {
+func Puzzle5_2(input []utility.Struct5_1) int {
 	maxX, maxY := 0, 0
 	for _, elem := range input {
 		if elem.X1 >= maxX {
@@ -58,9 +46,8 @@ func Puzzle5_1(input []utility.Struct5_1) int {
 	}
 
 	for _, inputLine := range input {
-		if inputLine.Y1 == inputLine.Y2 || inputLine.X1 == inputLine.X2 {
-			checkBitmap(bitmap, inputLine.X1, inputLine.Y1, inputLine.X2, inputLine.Y2)
-		}
+		checkBitmap(bitmap, inputLine.X1, inputLine.Y1, inputLine.X2, inputLine.Y2)
+		checkBitmapDiag(bitmap, inputLine.X1, inputLine.Y1, inputLine.X2, inputLine.Y2)
 	}
 	return countOverlaps(bitmap)
 }

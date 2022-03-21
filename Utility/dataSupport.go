@@ -10,6 +10,19 @@ type ActionValue struct {
 	Val    int
 }
 
+type Struct5_1 struct {
+	X1, Y1, X2, Y2 int
+}
+
+type Struct13_1 struct {
+	X, Y int
+}
+
+type Struct13_1XY struct {
+	XY string
+	val int
+}
+
 func GetActionValue(input []string) []ActionValue {
 	var actVal ActionValue
 	var actValArr []ActionValue
@@ -26,3 +39,5 @@ func GetActionValue(input []string) []ActionValue {
 	}
 	return actValArr
 }
+
+

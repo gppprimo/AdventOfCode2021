@@ -2,9 +2,7 @@
 
 package day2
 
-import (
-	utility "AoC-2021/Utility"
-)
+import utility "AoC-2021/Utility"
 
 func Puzzle2_1(input []utility.ActionValue) int {
 	depth, position := 0, 0

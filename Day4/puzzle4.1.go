@@ -1,34 +1,26 @@
+// https://adventofcode.com/2021/day/4
+
 package day4
 
 func getTable(boards [][]int, i int, j int) [][]int {
 	return boards[i:j]
 }
 
-func checkTableBitmap(boards [][]int, bitmap [][]int, rnd int, startIdx int, stopIdx int) {
-	for i := startIdx; i < stopIdx; i++ {
-		for j, elem := range boards[i] {
-			if elem == rnd {
-				bitmap[i][j] = 1
-			}
-		}
-	}
-}
-
 func checkOnes(arr []int) bool {
 	for _, e := range arr {
-		if e != 1 {
+		if e != -1 {
 			return false
 		}
 	}
 	return true
 }
 
-func checkBingo(bitmap [][]int, startIdx int, stopIdx int) bool {
-	for i := startIdx; i < stopIdx; i++ {
-		row := bitmap[i]
+func checkBingo(board [][]int) bool {
+	for i := 0; i < len(board); i++ {
+		row := board[i]
 		var column []int
-		for j := 0; j < len(row); j++ {
-			column = append(column, bitmap[j][i-startIdx])
+		for j := 0; j < len(board); j++ {
+			column = append(column, board[j][i])
 		}
 		if checkOnes(row) || checkOnes(column) {
 			return true
@@ -37,32 +29,35 @@ func checkBingo(bitmap [][]int, startIdx int, stopIdx int) bool {
 	return false
 }
 
-func sumUnmarked(table [][]int, bitmap [][]int, startIdx int, stopIdx int) int {
+func sumUnmarked(board [][]int) int {
 	sum := 0
-	for i := startIdx; i < stopIdx; i++ {
-		for j := 0; j < len(bitmap[i]); j++ {
-			if bitmap[i][j] == 0 {
-				sum += table[i][j]
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if board[i][j] != -1 {
+				sum += board[i][j]
 			}
 		}
 	}
 	return sum
 }
 
-func Puzzle4_1(randoms []int, boards [][]int) int {
-	bitmap := make([][]int, len(boards))
-	for i := 0; i < len(boards); i++ {
-		bitmap[i] = make([]int, len(boards[0]))
-	}
-
-	for _, rnd := range randoms {
-		for i := 0; i <= len(boards)-len(boards[0]); i += len(boards[0]) {
-			j := i + len(boards[0])
-			checkTableBitmap(boards, bitmap, rnd, i, j)
-			if checkBingo(bitmap, i, j) {
-				return sumUnmarked(boards, bitmap, i, j) * rnd
+func checkNumnberOnBoar(board [][]int, rnd int) {
+	for i := range board {
+		for j := range board[i] {
+			if board[i][j] == rnd {
+				board[i][j] = -1
 			}
+		}
+	}
+}
 
+func Puzzle4_1(randoms []int, boards [][][]int) int {
+	for _, rnd := range randoms {
+		for _, board := range boards {
+			checkNumnberOnBoar(board, rnd)
+			if checkBingo(board) {
+				return rnd * sumUnmarked(board)
+			}
 		}
 	}
 	return 0
